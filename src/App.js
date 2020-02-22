@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Table from "./component/Table";
+import Form from "./component/Form";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  // Initializing an empty array
+  state = {
+    listOfEmployees: []
+  };
+
+  // This particular method is testing an index vs. all the indices in the array,
+  // and returning all but the one that is passed through.
+  removeEmployee = index => {
+    const { listOfEmployees } = this.state;
+    // You must use this.setState() to modify an array.
+    this.setState({
+      // filter does not mutate but rather creates a new array,
+      // and is a preferred method for modifying arrays in JavaScript.
+      listOfEmployees: listOfEmployees.filter((listOfEmployees, i) => {
+        return i !== index;
+      })
+    });
+  };
+
+  // handles the submit action
+  handleSubmit = employee => {
+    this.setState({
+      listOfEmployees: [...this.state.listOfEmployees, employee]
+    });
+  };
+
+  render() {
+    const { listOfEmployees } = this.state;
+
+    return (
+      <div className="container">
+        <Table
+          employeeData={listOfEmployees}
+          removeEmployee={this.removeEmployee}
+        />
+        <Form handleSubmit={this.handleSubmit} />
+      </div>
+    );
+  }
 }
 
 export default App;
